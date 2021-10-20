@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
+import "hardhat/console.sol";
 
 contract Coin0 {
     // The keyword "public" makes variables
@@ -16,12 +17,24 @@ contract Coin0 {
     constructor() {
         minter = msg.sender;
     }
+    function totalSupply() external view returns (uint256) {
+      // must be enough for now
+      // I will assume that minter have all of them
+      return balances[minter];
+    }
+    function balanceOf(address addr) external view returns (uint256) {
+      // must be enough for now
+      // I will assume that minter have all of them
+      console.log("checking balance of ", addr, "and it is:", balances[addr]);
 
-    // Sends an amount of newly created coins to an address
+      return balances[addr];
+    }
+
+    // Sends an amount of newly created coins to creator
     // Can only be called by the contract creator
-    function mint(address receiver, uint amount) public {
+    function mint(uint amount) public {
         require(msg.sender == minter);
-        balances[receiver] += amount;
+        balances[minter] += amount;
     }
 
     // Errors allow you to provide information about
